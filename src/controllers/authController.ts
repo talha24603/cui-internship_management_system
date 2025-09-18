@@ -28,12 +28,23 @@ export const register = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
-    const user = await prisma.user.findUnique({where: {email}});
-    if(!user){
-        return res.status(400).json({message: "User not found"});
+    
+    if(!email || !password){
+        return res.status(400).json({message: "Email and password are required"});
     }
-    const isPasswordCorrect = await comparePassword(password, user.password);
-    if(!isPasswordCorrect){
-        return res.status(400).json({message: "Invalid password"});
+
+    try {
+        const user = await prisma.user.findUnique({where: {email}});
+        if(!user){
+            return res.status(400).json({message: "User not found"});
+        }
+        const isPasswordCorrect = await comparePassword(password, user.password);
+        if(!isPasswordCorrect){
+            return res.status(400).json({message: "Invalid password"});
+        }
+        
+        res.status(200).json({message: "Login successful", user: {id: user.id, name: user.name, email: user.email}});
+    } catch(error) {
+        return res.status(500).json({message: "Internal server error"});
     }
 }
