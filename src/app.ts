@@ -5,6 +5,15 @@ import authRoutes from "./routes/authRoutes";
 
 dotenv.config();
 
+// Check for required environment variables
+const requiredEnvVars = ['DATABASE_URL', 'JWT_ACCESS_SECRET', 'JWT_REFRESH_SECRET', 'JWT_EMAIL_SECRET'];
+const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar]);
+
+if (missingEnvVars.length > 0) {
+    console.error('Missing required environment variables:', missingEnvVars);
+    console.error('Please set these environment variables in your Vercel dashboard');
+}
+
 const app = express();
 
 app.use(express.json());
@@ -12,7 +21,12 @@ app.use(cookieParser());
 
 // Health check endpoint
 app.get("/api/health", (req, res) => {
-    res.status(200).json({ message: "Server is running" });
+    res.status(200).json({ 
+        message: "Server is running",
+        environment: process.env.NODE_ENV,
+        timestamp: new Date().toISOString(),
+        missingEnvVars: missingEnvVars
+    });
 });
 
 
