@@ -15,11 +15,12 @@ app.get("/api/health", (req, res) => {
     res.status(200).json({ message: "Server is running" });
 });
 
+
 app.use("/api/auth", authRoutes);
 
 // Error handling middleware
 app.use((err: any, req: any, res: any, next: any) => {
-    console.error(err.stack);
+    console.error("Error:", err);
     res.status(500).json({ message: "Something went wrong!" });
 });
 
