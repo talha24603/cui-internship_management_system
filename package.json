@@ -2,10 +2,9 @@
   "name": "backened",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
-  "main": "src/app.ts",
+  "main": "api/index.ts",
   "scripts": {
-    "postinstall": "prisma generate ",
+    "postinstall": "prisma generate --schema prisma/schema.prisma",
     "build": "prisma generate --schema prisma/schema.prisma",
     "dev": "tsx watch src/app.ts",
     "start": "tsx src/app.ts",
