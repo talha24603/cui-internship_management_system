@@ -5,7 +5,7 @@
   "type": "module",
   "main": "src/app.ts",
   "scripts": {
-    "postinstall": "prisma generate --schema prisma/schema.prisma",
+    "postinstall": "prisma generate ",
     "build": "prisma generate --schema prisma/schema.prisma",
     "dev": "tsx watch src/app.ts",
     "start": "tsx src/app.ts",
