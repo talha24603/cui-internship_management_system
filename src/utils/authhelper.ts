@@ -11,25 +11,43 @@ export const comparePassword = async (plain: string, hash: string) => {
 }
 
 export const signAccessToken =  (payload: object) => {
+    if (!process.env.JWT_ACCESS_SECRET) {
+        throw new Error('JWT_ACCESS_SECRET environment variable is not set');
+    }
     return jwt.sign(payload, process.env.JWT_ACCESS_SECRET as string, { expiresIn: "15m" });
 }
 
 export const signRefreshToken = (payload: object) => {
+    if (!process.env.JWT_REFRESH_SECRET) {
+        throw new Error('JWT_REFRESH_SECRET environment variable is not set');
+    }
     return jwt.sign(payload, process.env.JWT_REFRESH_SECRET as string, { expiresIn: "7d" });
 }
 
 export const verifyAccessToken = (token: string): JwtPayload => {
+    if (!process.env.JWT_ACCESS_SECRET) {
+        throw new Error('JWT_ACCESS_SECRET environment variable is not set');
+    }
     return jwt.verify(token, process.env.JWT_ACCESS_SECRET as string) as JwtPayload;
 }
     
 export const verifyRefreshToken = (token: string): JwtPayload => {
+    if (!process.env.JWT_REFRESH_SECRET) {
+        throw new Error('JWT_REFRESH_SECRET environment variable is not set');
+    }
     return jwt.verify(token, process.env.JWT_REFRESH_SECRET as string) as JwtPayload;
 }
 export const signEmailToken = (userId: string) => {
+    if (!process.env.JWT_EMAIL_SECRET) {
+        throw new Error('JWT_EMAIL_SECRET environment variable is not set');
+    }
     return jwt.sign({sub:userId}, process.env.JWT_EMAIL_SECRET as string, { expiresIn: "1h" });
 }
 
 export const verifyEmailToken = (token: string) => {
+    if (!process.env.JWT_EMAIL_SECRET) {
+        throw new Error('JWT_EMAIL_SECRET environment variable is not set');
+    }
     return jwt.verify(token, process.env.JWT_EMAIL_SECRET as string);
 }
 export const storeRefreshToken = (userId: string, token: string) => {
