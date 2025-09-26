@@ -32,7 +32,8 @@ app.use(cookieParser());
 app.get("/api/health", async (req, res) => {
     try {
         // Test database connection
-        const prisma = (await import("../prisma/client")).default;
+        const { PrismaClient } = await import("@prisma/client");
+        const prisma = new PrismaClient();
         await prisma.$connect();
         
         res.status(200).json({ 

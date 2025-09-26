@@ -1,7 +1,18 @@
-import prisma from "../../prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { comparePassword, hashPassword, signAccessToken, signRefreshToken, storeRefreshToken, verifyRefreshToken, verifyEmailToken, revokeRefreshToken, signEmailToken } from "../utils/authhelper";
 import { sendVerificationEmail } from "../utils/mailer";
 import { Request, Response } from "express";
+
+// Prisma client with connection pooling for serverless
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined;
+};
+
+const prisma = globalForPrisma.prisma ?? new PrismaClient({
+  log: ['error'],
+});
+
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
 
 

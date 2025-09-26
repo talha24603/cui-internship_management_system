@@ -1,6 +1,17 @@
 import bcrypt from "bcrypt";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import prisma from "../../prisma/client";
+import { PrismaClient } from "@prisma/client";
+
+// Prisma client with connection pooling for serverless
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined;
+};
+
+const prisma = globalForPrisma.prisma ?? new PrismaClient({
+  log: ['error'],
+});
+
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
 export const hashPassword = async (plain: string) => {
     return await  bcrypt.hash(plain, 12);
