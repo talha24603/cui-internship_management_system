@@ -1,27 +1,12 @@
 {
-  "name": "backened",
+  "name": "backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "api/index.ts",
   "scripts": {
     "postinstall": "prisma generate --schema prisma/schema.prisma",
-    "build": "prisma generate --schema prisma/schema.prisma",
     "dev": "tsx watch src/app.ts",
-    "start": "tsx src/app.ts",
-    "prisma:gen": "prisma generate --schema prisma/schema.prisma",
-    "prisma:migrate": "prisma migrate dev --schema prisma/schema.prisma",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "prisma generate --schema prisma/schema.prisma",
+    "start": "node api/index.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/talha24603/final-year-project.git"
-  },
-  "author": "talha",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/talha24603/final-year-project/issues"
-  },
-  "homepage": "https://github.com/talha24603/final-year-project#readme",
   "dependencies": {
     "@prisma/client": "^6.16.2",
     "bcrypt": "^6.0.0",
@@ -31,7 +16,7 @@
     "jsonwebtoken": "^9.0.2",
     "nodemailer": "^7.0.6",
     "prisma": "^6.16.2",
-    "typescript": "^5.9.2"
+    "serverless-http": "^3.2.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
@@ -41,6 +26,7 @@
     "@types/node": "^24.5.2",
     "@types/nodemailer": "^7.0.1",
     "nodemon": "^3.1.10",
-    "tsx": "^4.20.5"
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2"
   }
 }
