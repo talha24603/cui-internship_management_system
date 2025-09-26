@@ -5,7 +5,8 @@
     "postinstall": "prisma generate --schema prisma/schema.prisma",
     "dev": "tsx watch src/app.ts",
     "build": "prisma generate --schema prisma/schema.prisma",
-    "start": "node api/index.js"
+    "start": "node api/index.js",
+    "vercel-start": "node api/index.js"
   },
   "dependencies": {
     "@prisma/client": "^6.16.2",
