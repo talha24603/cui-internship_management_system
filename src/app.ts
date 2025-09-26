@@ -56,7 +56,7 @@ app.get("/api/health", async (req, res) => {
 });
 
 
-app.use("/auth", authRoutes);
+app.use("/api/auth", authRoutes);
 
 // Error handling middleware
 app.use((err: any, req: any, res: any, next: any) => {
