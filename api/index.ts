@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Health check endpoint
-app.get("/api/health", async (req, res) => {
+app.get("/health", async (req, res) => {
     try {
         res.status(200).json({
             message: "Server is running",
@@ -29,7 +29,7 @@ app.get("/api/health", async (req, res) => {
 });
 
 // Test endpoint
-app.get("/api", (req, res) => {
+app.get("/", (req, res) => {
     res.json({
         message: "Hello from Vercel!",
         method: req.method,
