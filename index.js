@@ -31,14 +31,8 @@ module.exports = (req, res) => {
                 endpoints: {
                     health: "/api/health",
                     register: "/api/register",
-                    login: "/api/login",
-                    test: "/api/test"
+                    login: "/api/login"
                 }
-            });
-        } else if (url === '/api/test') {
-            res.status(200).json({
-                message: "Test endpoint working!",
-                timestamp: new Date().toISOString()
             });
         } else if (url === '/api/register' && method === 'POST') {
             // Parse body for POST requests
@@ -91,7 +85,7 @@ module.exports = (req, res) => {
         } else {
             res.status(404).json({
                 message: "Not found",
-                availableEndpoints: ["/api", "/api/health", "/api/register", "/api/login", "/api/test"]
+                availableEndpoints: ["/api", "/api/health", "/api/register", "/api/login"]
             });
         }
     } catch (error) {
