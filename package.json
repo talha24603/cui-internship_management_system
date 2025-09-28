@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "postinstall": "prisma generate",
-    "dev": "tsx watch src/app.ts",
+    "dev": "tsx watch api/index.ts",
+    "local": "node local-server.js",
     "build": "prisma generate && tsc",
     "start": "node dist/app.js",
     "vercel-build": "prisma generate && tsc"
@@ -18,8 +19,8 @@
     "nodemailer": "^7.0.6",
     "prisma": "^6.16.2",
     "serverless-http": "^3.2.0",
-    "swagger-ui-express": "^5.0.0",
-    "swagger-jsdoc": "^6.2.8"
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
