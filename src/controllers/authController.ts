@@ -18,23 +18,19 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
 export const register = async (req: Request, res: Response) => {
     try {
-        const { name, email, password } = req.body;
+        const { regNo, role, name, email, password } = req.body;
 
         // Validate input FIRST
         if(!name || !email || !password){
             return res.status(400).json({message: "All fields are required"});
         }
 
-        // Validate email format
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            return res.status(400).json({message: "Invalid email format"});
-        }
+       
 
         // Validate password length
-        if (password.length < 6) {
-            return res.status(400).json({message: "Password must be at least 6 characters long"});
-        }
+        // if (password.length < 6) {
+        //     return res.status(400).json({message: "Password must be at least 6 characters long"});
+        // }
 
         // Check if user already exists
         const existingUser = await prisma.user.findUnique({
@@ -49,9 +45,14 @@ export const register = async (req: Request, res: Response) => {
         const hashedPassword = await hashPassword(password);
 
         // Create user
-        const user = await prisma.user.create({
-            data: {name, email, password: hashedPassword}
-        });
+        const userData = { 
+            regNo: regNo || null, 
+            role: role || 'user', 
+            name, 
+            email, 
+            password: hashedPassword
+        };
+        const user = await prisma.user.create({ data: userData });
 
         console.log("User created successfully:", { id: user.id, email: user.email });
 
