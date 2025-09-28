@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "module": "ESNext",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "strict": true,
     "esModuleInterop": true,
@@ -12,9 +12,12 @@
     "allowSyntheticDefaultImports": true,
     "declaration": true,
     "declarationMap": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "typeRoots": ["./node_modules/@types"],
+    "types": []
   },
-  "include": ["src", "prisma", "netlify/functions", "api"]
+  "include": ["src", "prisma", "api"],
+  "exclude": ["netlify/functions", "node_modules", "dist"]
 }
 
 
