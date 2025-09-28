@@ -8,7 +8,12 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 const prisma = globalForPrisma.prisma ?? new PrismaClient({
-  log: ['error'],
+  log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+  datasources: {
+    db: {
+      url: process.env.DATABASE_URL,
+    },
+  },
 });
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
@@ -23,6 +28,7 @@ export const comparePassword = async (plain: string, hash: string) => {
 
 export const signAccessToken =  (payload: object) => {
     if (!process.env.JWT_ACCESS_SECRET) {
+        console.error('JWT_ACCESS_SECRET environment variable is not set');
         throw new Error('JWT_ACCESS_SECRET environment variable is not set');
     }
     return jwt.sign(payload, process.env.JWT_ACCESS_SECRET as string, { expiresIn: "15m" });
@@ -30,6 +36,7 @@ export const signAccessToken =  (payload: object) => {
 
 export const signRefreshToken = (payload: object) => {
     if (!process.env.JWT_REFRESH_SECRET) {
+        console.error('JWT_REFRESH_SECRET environment variable is not set');
         throw new Error('JWT_REFRESH_SECRET environment variable is not set');
     }
     return jwt.sign(payload, process.env.JWT_REFRESH_SECRET as string, { expiresIn: "7d" });
@@ -37,6 +44,7 @@ export const signRefreshToken = (payload: object) => {
 
 export const verifyAccessToken = (token: string): JwtPayload => {
     if (!process.env.JWT_ACCESS_SECRET) {
+        console.error('JWT_ACCESS_SECRET environment variable is not set');
         throw new Error('JWT_ACCESS_SECRET environment variable is not set');
     }
     return jwt.verify(token, process.env.JWT_ACCESS_SECRET as string) as JwtPayload;
@@ -44,12 +52,14 @@ export const verifyAccessToken = (token: string): JwtPayload => {
     
 export const verifyRefreshToken = (token: string): JwtPayload => {
     if (!process.env.JWT_REFRESH_SECRET) {
+        console.error('JWT_REFRESH_SECRET environment variable is not set');
         throw new Error('JWT_REFRESH_SECRET environment variable is not set');
     }
     return jwt.verify(token, process.env.JWT_REFRESH_SECRET as string) as JwtPayload;
 }
 export const signEmailToken = (userId: string) => {
     if (!process.env.JWT_EMAIL_SECRET) {
+        console.error('JWT_EMAIL_SECRET environment variable is not set');
         throw new Error('JWT_EMAIL_SECRET environment variable is not set');
     }
     return jwt.sign({sub:userId}, process.env.JWT_EMAIL_SECRET as string, { expiresIn: "1h" });
@@ -57,6 +67,7 @@ export const signEmailToken = (userId: string) => {
 
 export const verifyEmailToken = (token: string) => {
     if (!process.env.JWT_EMAIL_SECRET) {
+        console.error('JWT_EMAIL_SECRET environment variable is not set');
         throw new Error('JWT_EMAIL_SECRET environment variable is not set');
     }
     return jwt.verify(token, process.env.JWT_EMAIL_SECRET as string);
