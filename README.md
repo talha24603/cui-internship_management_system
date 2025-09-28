@@ -1,3 +1,5 @@
+[![CUI Internship Banner](https://raw.githubusercontent.com/ZainulabdeenOfficial/cui_Internship_system_UI/master/public/Banner.png)](https://github.com/ZainulabdeenOfficial/cui_Internship_system_UI)
+
 # CUI Internship Management System
 ## Project Overview
 
