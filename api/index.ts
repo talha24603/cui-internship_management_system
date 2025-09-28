@@ -1,4 +1,3 @@
-// Simple Vercel serverless function without serverless-http
 export default function handler(req: any, res: any) {
     // Set CORS headers
     res.setHeader('Access-Control-Allow-Credentials', true);
@@ -12,42 +11,33 @@ export default function handler(req: any, res: any) {
         return;
     }
 
-    console.log("Function invoked:", req.method, req.url);
-
     try {
-        // Route handling - Vercel strips /api prefix
-        if (req.url === '/health' || req.url === '/api/health' || req.url === '/health/') {
+        if (req.url === '/' || req.url === '/api' || req.url === '/api/') {
             res.status(200).json({
-                message: "Server is running",
+                message: "Backend API is running",
                 environment: process.env.NODE_ENV,
                 timestamp: new Date().toISOString(),
-                status: "healthy"
-            });
-        } else if (req.url === '/' || req.url === '/api' || req.url === '/api/') {
-            res.status(200).json({
-                message: "Hello from Vercel!",
-                method: req.method,
-                url: req.url,
-                timestamp: new Date().toISOString(),
-                environment: process.env.NODE_ENV
+                endpoints: {
+                    health: "/api/health",
+                    auth: {
+                        register: "/api/auth/register",
+                        login: "/api/auth/login",
+                        verifyEmail: "/api/auth/verify-email",
+                        refreshToken: "/api/auth/refresh-token",
+                        logout: "/api/auth/logout"
+                    }
+                }
             });
         } else {
             res.status(404).json({
                 message: "Not found",
-                url: req.url,
-                availableEndpoints: ["/", "/health"],
-                debug: {
-                    method: req.method,
-                    url: req.url,
-                    headers: req.headers
-                }
+                availableEndpoints: ["/", "/health", "/auth/register", "/auth/login", "/auth/verify-email", "/auth/refresh-token", "/auth/logout"]
             });
         }
     } catch (error) {
         console.error("Error in handler:", error);
         res.status(500).json({
-            message: "Error occurred",
-            error: error instanceof Error ? error.message : "Unknown error"
+            message: "Internal server error"
         });
     }
 }
