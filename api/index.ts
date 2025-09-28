@@ -15,8 +15,8 @@ export default function handler(req: any, res: any) {
     console.log("Function invoked:", req.method, req.url);
 
     try {
-        // Route handling
-        if (req.url === '/health' || req.url === '/api/health') {
+        // Route handling - Vercel strips /api prefix
+        if (req.url === '/health' || req.url === '/api/health' || req.url === '/health/') {
             res.status(200).json({
                 message: "Server is running",
                 environment: process.env.NODE_ENV,
@@ -35,7 +35,12 @@ export default function handler(req: any, res: any) {
             res.status(404).json({
                 message: "Not found",
                 url: req.url,
-                availableEndpoints: ["/", "/health"]
+                availableEndpoints: ["/", "/health"],
+                debug: {
+                    method: req.method,
+                    url: req.url,
+                    headers: req.headers
+                }
             });
         }
     } catch (error) {
