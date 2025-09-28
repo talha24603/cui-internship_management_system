@@ -1,48 +1,48 @@
-import express from "express";
-import cookieParser from "cookie-parser";
-import dotenv from "dotenv";
-import serverless from "serverless-http";
+// Simple Vercel serverless function without serverless-http
+export default function handler(req: any, res: any) {
+    // Set CORS headers
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+    res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
 
-dotenv.config();
+    // Handle preflight requests
+    if (req.method === 'OPTIONS') {
+        res.status(200).end();
+        return;
+    }
 
-const app = express();
+    console.log("Function invoked:", req.method, req.url);
 
-app.use(express.json());
-app.use(cookieParser());
-
-// Health check endpoint
-app.get("/health", async (req, res) => {
     try {
-        res.status(200).json({
-            message: "Server is running",
-            environment: process.env.NODE_ENV,
-            timestamp: new Date().toISOString(),
-            status: "healthy"
-        });
+        // Route handling
+        if (req.url === '/health' || req.url === '/api/health') {
+            res.status(200).json({
+                message: "Server is running",
+                environment: process.env.NODE_ENV,
+                timestamp: new Date().toISOString(),
+                status: "healthy"
+            });
+        } else if (req.url === '/' || req.url === '/api' || req.url === '/api/') {
+            res.status(200).json({
+                message: "Hello from Vercel!",
+                method: req.method,
+                url: req.url,
+                timestamp: new Date().toISOString(),
+                environment: process.env.NODE_ENV
+            });
+        } else {
+            res.status(404).json({
+                message: "Not found",
+                url: req.url,
+                availableEndpoints: ["/", "/health"]
+            });
+        }
     } catch (error) {
-        console.error("Health check error:", error);
+        console.error("Error in handler:", error);
         res.status(500).json({
-            message: "Health check failed",
+            message: "Error occurred",
             error: error instanceof Error ? error.message : "Unknown error"
         });
     }
-});
-
-// Test endpoint
-app.get("/", (req, res) => {
-    res.json({
-        message: "Hello from Vercel!",
-        method: req.method,
-        url: req.url,
-        timestamp: new Date().toISOString(),
-        environment: process.env.NODE_ENV
-    });
-});
-
-// Error handling middleware
-app.use((err: any, req: any, res: any, next: any) => {
-    console.error("Error:", err);
-    res.status(500).json({ message: "Something went wrong!" });
-});
-
-export default serverless(app);
+}
