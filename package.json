@@ -4,7 +4,7 @@
   "scripts": {
     "postinstall": "prisma generate",
     "dev": "vercel dev",
-    "build": "prisma generate && tsc",
+    "build": "prisma generate",
     "start": "vercel dev",
     "vercel-build": "prisma generate"
   },
