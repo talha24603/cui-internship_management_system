@@ -1,12 +1,13 @@
 {
   "name": "backend",
   "version": "1.0.0",
+  "main": "api/index.js",
   "scripts": {
     "postinstall": "prisma generate",
     "dev": "vercel dev",
-    "build": "prisma generate",
+    "build": "prisma generate && tsc",
     "start": "vercel dev",
-    "vercel-build": "prisma generate"
+    "vercel-build": "prisma generate && tsc"
   },
   "dependencies": {
     "@prisma/client": "^6.16.2",
